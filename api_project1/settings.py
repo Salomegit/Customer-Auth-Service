@@ -39,11 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'customer_auth1',
     'django.contrib.sites',
-    'allauth.account',
-    'allauth.socialaccount.providers.google'
+    # 'allauth.account',
+    # 'allauth.socialaccount.providers.google'
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
+SOCIAL_ACCOUNT_PROVIDERS = {
     'google':{
         'scope':[
             'profile',

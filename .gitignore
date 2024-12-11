@@ -49,3 +49,8 @@ dist/
 # Others
 *.bak
 *.orig
+
+
+# Virtual environment
+env/
+
