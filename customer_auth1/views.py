@@ -3,6 +3,6 @@
 from django.shortcuts import render
 from django.http import HttpRequest,HttpResponse,JsonResponse
 
-def homepage(request: HttpRequest):
-    return JsonResponse({'msg':"hello"})
+def profile(request):
+    return render (request, "profile.html")
 # Create your views here.

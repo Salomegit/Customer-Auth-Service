@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'customer_auth1',
     'django.contrib.sites',
-    # 'allauth.account',
-    # 'allauth.socialaccount.providers.google'
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google'
 ]
 
-SOCIAL_ACCOUNT_PROVIDERS = {
+SOCIALACCOUNT_PROVIDERS = {
     'google':{
         'scope':[
             'profile',
@@ -51,7 +53,10 @@ SOCIAL_ACCOUNT_PROVIDERS = {
         ],
         'AUTH_PARAMS':{
             "access_type":'online'
-        }
+
+        },
+                'OAUTH_PKCE_ENABLED': True,  # Enables PKCE for OAuth2
+
     }
 }
 
@@ -64,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'api_project1.urls'
@@ -145,8 +151,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.accounts.auth_backends.AuthenticationBackend'
+    'allauth.account.auth_backends.AuthenticationBackend'
 )
 
 LOGIN_DIRECT_URL = "/"
 LOGIN_REDIRECT_URL = "/"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Or "email" or "username_email"
+SOCIALACCOUNT_QUERY_EMAIL = True
