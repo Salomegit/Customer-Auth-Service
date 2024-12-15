@@ -1,0 +1,10 @@
+###
+
+post http://http://127.0.0.1:8000/api/token HTTP/1.1
+content-Type: application/json
+
+{
+    'username':'sally_admin1'
+    'password':'incorrect'
+
+}
