@@ -54,3 +54,5 @@ dist/
 # Virtual environment
 env/
 
+# http files
+*.http
