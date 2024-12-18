@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import BuildAccessTokenCookies  # Import the custom view
 
 urlpatterns = [
-    path('token/', views.custom_token_obtain_pair, name='CustomTokenObtainPairView'),
+    path('token/', BuildAccessTokenCookies.as_view(), name='CustomTokenObtainPairView'),
 ]

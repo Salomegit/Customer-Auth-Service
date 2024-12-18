@@ -4,45 +4,50 @@ from django.shortcuts import render
 from django.http import HttpRequest,HttpResponse,JsonResponse
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenObtainPairView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
 
+class BuildAccessTokenCookies(TokenObtainPairView):
+    def post(self, request, *args,**kwargs):
 
-@api_view(['POST'])
-def custom_token_obtain_pair(request):
-    try:
-        # Use the default TokenObtainPairSerializer to validate and generate tokens
-        serializer = TokenObtainPairSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        
-        tokens = serializer.validated_data  # Contains 'access' and 'refresh'
+        try:
+            response = super().post(request,*args,**kwargs)
+            tokens = response.data
 
-        access_token = tokens['access']
-        refresh_token = tokens['refresh']
+            access_token = tokens['access']
+            refresh_token = tokens['refresh']
 
-        # Create a response
-        res = Response({'success': True}, status=status.HTTP_200_OK)
+            res = Response()
 
-        # Set access token cookie
-        res.set_cookie(
-            key='access_token',
-            value=access_token,
-            httponly=True,
-            secure=True,
-            samesite='None',
-            path='/'
-        )
+            res.data = {'success':True,
+            
+            }
 
-        # Set refresh token cookie
-        res.set_cookie(
-            key='refresh_token',
-            value=refresh_token,
-            httponly=True,
-            secure=True,
-            samesite='None',
-            path='/'
-        )
+            res.set_cookie(
+                key = 'access_token',
+                value=access_token,
+                httponly=True,
+                secure=True,
+                samesite='None',
+                path='/'
+            )
 
-        return res
+            res.set_cookie(
+                key = 'refresh_token',
+                value=refresh_token,
+                httponly=True,
+                secure=True,
+                samesite='None',
+                path='/auth/token/refresh/',
+                max_age=60 * 60 * 24 * 7  
+            )
 
-    except Exception as e:
-        return Response({'success': False, 'error': str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+              # Include CSRF Token
+            # csrf_token = get_token(request)
+            # res.data['csrf_token'] = csrf_token
+
+            return res
+            
+        except KeyError as e:
+            return Response({'success': False, 'error': str(e)}, status=400)
+        except Exception as e:
+            return Response({'success': False, 'error': 'Something went wrong'}, status=500)
