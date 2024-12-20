@@ -37,8 +37,7 @@ class BuildAccessTokenCookies(TokenObtainPairView):
                 httponly=True,
                 secure=True,
                 samesite='None',
-                path='/auth/token/refresh/',
-                max_age=60 * 60 * 24 * 7  
+                path='/',
             )
 
               # Include CSRF Token
@@ -59,7 +58,6 @@ class CustomRefreshToken(TokenRefreshView):
         try:
             refresh_token = request.COOKIES.get('refresh_token')
             request.data['refresh'] = refresh_token
-            print(refresh_token)
             response = super().post(request,*args,**kwargs)
 
             tokens = response.data
@@ -78,6 +76,7 @@ class CustomRefreshToken(TokenRefreshView):
                 path='/'
             )
 
+            print(access_token)
             return res
 
 
