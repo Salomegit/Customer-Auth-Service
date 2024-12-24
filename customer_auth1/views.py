@@ -5,6 +5,7 @@ from django.http import HttpRequest,HttpResponse,JsonResponse
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 
 class BuildAccessTokenCookies(TokenObtainPairView):
     def post(self, request, *args,**kwargs):
@@ -58,6 +59,10 @@ class CustomRefreshToken(TokenRefreshView):
         try:
             refresh_token = request.COOKIES.get('refresh_token')
             request.data['refresh'] = refresh_token
+    
+            if not refresh_token:
+                return Response({'refreshed': False, 'error': 'Refresh token not found'}, status=400)
+
             response = super().post(request,*args,**kwargs)
 
             tokens = response.data
@@ -85,7 +90,14 @@ class CustomRefreshToken(TokenRefreshView):
 
 
 
-
-        
-
+@api_view(['Post'])
+def logout(request):
+    try:
+        res = Response()
+        res.data = {'success':True}
+        res.delete_cookie('access_token',path='/', samesite='None')
+        res.delete_cookie('refresh_token',path='/', samesite='None')
+        return res
+    except:
+        return Response({'success':False})
 
