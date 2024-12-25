@@ -5,7 +5,8 @@ from django.http import HttpRequest,HttpResponse,JsonResponse
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 class BuildAccessTokenCookies(TokenObtainPairView):
     def post(self, request, *args,**kwargs):
@@ -94,10 +95,21 @@ class CustomRefreshToken(TokenRefreshView):
 def logout(request):
     try:
         res = Response()
-        res.data = {'success':True}
+        res.data = {'success':'User is successfully Logged Out'}
         res.delete_cookie('access_token',path='/', samesite='None')
         res.delete_cookie('refresh_token',path='/', samesite='None')
         return res
     except:
-        return Response({'success':False})
+        return Response({'success':'User is not logged out'})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def is_authenticated(request):
+    if IsAuthenticated:
+
+        return Response({ "authenticated":True })
+
+    else:
+        return Response({ "authenticated":False })
 
