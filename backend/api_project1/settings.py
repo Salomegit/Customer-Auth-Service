@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'customer_auth1',
-    'customer_orders1',
+    'apps.customer_auth1',
+    'apps.customer_orders1',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -175,7 +175,7 @@ PASSWORD_HASHERS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'customer_auth1.authenticate_cookies.CookiesJWTAuthentication'
+        'apps.customer_auth1.authenticate_cookies.CookiesJWTAuthentication'
         # 'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
