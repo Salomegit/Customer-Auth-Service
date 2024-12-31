@@ -21,7 +21,7 @@ class BuildAccessTokenCookies(TokenObtainPairView):
 
             res = Response()
 
-            res.data = {'success':True,
+            res.data = {'success':"Successfully logged in",
             
             }
 
