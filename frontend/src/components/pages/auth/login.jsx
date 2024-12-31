@@ -21,7 +21,7 @@ const LoginForm = () => {
 
   }
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
+    <div className="max-w-md mx-auto p-6 bg-red shadow-md rounded-lg">
       <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Username Field */}
@@ -34,7 +34,7 @@ const LoginForm = () => {
             type="text"
             id="username"
             placeholder="Enter your username"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {errors.username && <p className="text-red-500">{errors.username.message}</p>}
 

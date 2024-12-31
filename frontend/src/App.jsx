@@ -1,4 +1,5 @@
-import './index.css'
+import './App.css'
+
 
 import Login_route from './routes/auth/login_route'
 function App() {
