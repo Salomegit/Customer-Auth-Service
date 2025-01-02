@@ -83,7 +83,7 @@ class CustomRefreshToken(TokenRefreshView):
                 path='/'
             )
 
-            print(access_token)
+            # print(access_token)
             return res
 
 

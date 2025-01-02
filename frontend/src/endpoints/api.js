@@ -2,8 +2,9 @@ import axios from 'axios'
 const BASE_URL = 'http://127.0.0.1:8000/'; 
 const LOGIN_URL = `${BASE_URL}auth/login/`;
 const NOTES_URL = `${BASE_URL}notes/`;
+const REFRESH_TOKEN_URL = `${BASE_URL}/auth/token/refresh`;
 
-export const login_api = async (username ,password) =>{
+const login_api = async (username ,password) =>{
     const response = await axios.post(LOGIN_URL,{username:username,password:password},
                     {withCredentials:true}
     );
@@ -12,7 +13,36 @@ export const login_api = async (username ,password) =>{
 
 }
 
-export const getNotes =  async ()={
-    const response await
+export default login_api
+
+export const getNotes = async () =>{
+    try {
+        const response = await axios.get(NOTES_URL,{withCredentials:true});
+        return response.data
+    }
+    catch (error){
+        return callRefreshNotCalled(error,getNotes)
+    }
 }
 
+export const refreshToken = async () =>{
+    try {
+        const response = await axios.post(REFRESH_TOKEN_URL,{},{withCredentials:true});
+        return true
+    } catch (error) {
+        return false
+        
+    }
+   
+}
+
+const callRefreshNotCalled = async (error, func) => {
+    if(error.response && error.response.status === 401) {
+        const token_refreshed =await refreshToken()
+            if (token_refreshed){
+                const retry_response = await func()
+                return retry_response.data
+            }
+    }
+    return false
+}
