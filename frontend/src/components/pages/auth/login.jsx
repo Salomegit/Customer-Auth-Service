@@ -21,9 +21,9 @@ const LoginForm = () => {
 
   }
   return (
-    <div className="max-w-md mx-auto p-6 bg-red shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+    <div className="flex justify-center items-center p-6  shadow-md rounded-md w-80 mx-auto mt-10"> 
       <form onSubmit={handleSubmit(onSubmit)}>
+      <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
         {/* Username Field */}
         <div className="mb-4">
           <label htmlFor="username" className="block text-gray-700 font-medium mb-2">
