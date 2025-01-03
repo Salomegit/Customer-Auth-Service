@@ -3,7 +3,7 @@ const BASE_URL = 'http://127.0.0.1:8000/';
 const LOGIN_URL = `${BASE_URL}auth/login/`;
 const NOTES_URL = `${BASE_URL}notes/`;
 const REFRESH_TOKEN_URL = `${BASE_URL}/auth/token/refresh`;
-
+const LOGOUT_URL = `${BASE_URL}auth/logout/`;
 const login_api = async (username ,password) =>{
     const response = await axios.post(LOGIN_URL,{username:username,password:password},
                     {withCredentials:true}
@@ -27,10 +27,10 @@ export const getNotes = async () =>{
 
 export const refreshToken = async () =>{
     try {
-        const response = await axios.post(REFRESH_TOKEN_URL,{},{withCredentials:true});
+         await axios.post(REFRESH_TOKEN_URL,{},{withCredentials:true});
         return true
     } catch (error) {
-        return false
+        return error("Failed to refresh token")
         
     }
    
@@ -46,3 +46,14 @@ const callRefreshNotCalled = async (error, func) => {
     }
     return false
 }
+
+
+export const logout = async () =>{ 
+    try {
+        await axios.post(LOGOUT_URL,{},{withCredentials:true});
+    return true
+    } catch (error) {
+        return error("Failed to logout")
+    }
+    
+ }
