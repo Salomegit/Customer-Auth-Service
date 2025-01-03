@@ -4,6 +4,7 @@ const LOGIN_URL = `${BASE_URL}auth/login/`;
 const NOTES_URL = `${BASE_URL}notes/`;
 const REFRESH_TOKEN_URL = `${BASE_URL}/auth/token/refresh`;
 const LOGOUT_URL = `${BASE_URL}auth/logout/`;
+const Authenticated_URL = `${BASE_URL}auth/authenticated/`;
 const login_api = async (username ,password) =>{
     const response = await axios.post(LOGIN_URL,{username:username,password:password},
                     {withCredentials:true}
@@ -56,4 +57,13 @@ export const logout = async () =>{
         return error("Failed to logout")
     }
     
+ }
+
+ export const isAuthenticated = async () =>{
+    try{
+        await axios.post(Authenticated_URL,{},{withCredentials:true});
+        return 'user is authenticated'
+    } catch{
+        return 'user is not authenticated'
+    }
  }
