@@ -21,7 +21,6 @@ export const AuthProvider = ({children}) => {
     },[window.location.pathname])
 
 
-
   return (
     <AuthContext.Provider>
      {children}
