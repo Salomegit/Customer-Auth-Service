@@ -2,7 +2,7 @@ import axios from 'axios'
 const BASE_URL = 'http://127.0.0.1:8000/'; 
 const LOGIN_URL = `${BASE_URL}auth/login/`;
 const NOTES_URL = `${BASE_URL}notes/`;
-const REFRESH_TOKEN_URL = `${BASE_URL}/auth/token/refresh`;
+const REFRESH_TOKEN_URL = `${BASE_URL}auth/token/refresh`;
 const LOGOUT_URL = `${BASE_URL}auth/logout/`;
 const Authenticated_URL = `${BASE_URL}auth/authenticated/`;
 const login_api = async (username ,password) =>{
@@ -54,8 +54,8 @@ export const logout = async () =>{
         await axios.post(LOGOUT_URL,{},{withCredentials:true});
     return true
     } catch (error) {
-        return error("Failed to logout")
-    }
+        console.error("Failed to logout:", error.message); 
+        return { success: false, message: error.message };     }
     
  }
 
