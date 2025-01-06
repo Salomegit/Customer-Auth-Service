@@ -8,25 +8,28 @@ export const AuthProvider = ({children}) => {
 
     const getAuthenticated = async () => {
         try{
-            const response = await isAuthenticated()
-            setAuthenticated(response)
+            const success = await isAuthenticated()
+            setAuthenticated(success)
         }catch{
-            setAuthenticated('User is not authenticated')
+            setAuthenticated(false)
         } finally {
             setLoading(false)
     }
+}
 
     useEffect(() => {
-        getAuthenticated()
+        getAuthenticated();
     },[window.location.pathname])
 
 
   return (
-    <AuthContext.Provider>
+    <AuthContext.Provider value={{authenticated,loading}}>
      {children}
     </AuthContext.Provider>
   )
 }
 
 
- 
+
+export const useAuth =() => 
+    useContext(AuthContext );
