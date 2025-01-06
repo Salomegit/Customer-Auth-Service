@@ -1,5 +1,9 @@
 import { useContext,useState,useEffect,createContext } from "react"
 import { isAuthenticated } from "../endpoints/api"
+import { login_api } from "../endpoints/api"
+
+
+
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
@@ -12,8 +16,16 @@ export const AuthProvider = ({children}) => {
             setAuthenticated(success)
         }catch{
             setAuthenticated(false)
-        } finally {
+        } finally { 
             setLoading(false)
+    }
+}
+
+  const login_user = async (username,password) =>{
+    const success = await login_api(username,password)
+    if (success){
+        setAuthenticated(true)
+        navigator('/menu')
     }
 }
 
@@ -23,11 +35,12 @@ export const AuthProvider = ({children}) => {
 
 
   return (
-    <AuthContext.Provider value={{authenticated,loading}}>
+    <AuthContext.Provider value={{authenticated,loading,login_user }}>
      {children}
     </AuthContext.Provider>
   )
 }
+
 
 
 

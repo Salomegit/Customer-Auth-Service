@@ -1,32 +1,39 @@
 import { useForm } from 'react-hook-form';
-import login_api from '../../../endpoints/api';
+// import login_api from '../../../endpoints/api';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/useAuth';
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const[successMessage, setSuccessMessage] = useState('');
+  const{ login_user } = useAuth()
 
   const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm();
-  const onSubmit = async (data) => {
+  const onSubmit = async ({username,password}) => {
     
 
     try {
 
-      const result = await login_api(data.username, data.password);
+      const result = await login_user(username, password);
       if (result) {
         setSuccessMessage("Login Successful! Welcome");
-      }
+      }else {
+        setError("root", {
+            type: 'manual',
+            message: 'Invalid Credentials!' // This will show if login fails
+        });
+    }
 
      
       await new Promise((resolve) => setTimeout(resolve, 2000));
       navigate('/menu')
 
-    }
-    catch (error) {
-      setError("root", {
-        type: 'manual',
-        message: 'Invalid Credentials!'
-      })
+    }catch (error) {
+    setError("root", {
+      type: 'manual',
+      message: 'Error during login process!' // General error handling
+  })
 
     }
 

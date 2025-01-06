@@ -9,6 +9,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.permissions import BasePermission
 from .user_serializer import UserRegistrationSerializer
+from rest_framework.exceptions import ValidationError
+
 class BuildAccessTokenCookies(TokenObtainPairView):
     def post(self, request, *args,**kwargs):
 
@@ -78,18 +80,25 @@ class CustomRefreshToken(TokenRefreshView):
                 key = 'access_token',
                 value=access_token,
                 httponly=True,
-                secure=True,
+                secure=False,
                 samesite='None',
                 path='/'
             )
 
-            # print(access_token)
+            print(refresh_token)
             return res
 
 
-        except:
-            return Response({'refreshed':False})
-
+        except ValidationError as e:
+            return Response(
+                {'refreshed': False, 'error': str(e)}, 
+                status=400
+            )
+        except Exception as e:
+            return Response(
+                {'refreshed': False, 'error': 'An unexpected error occurred'},
+                status=500
+            )
 
 
 @api_view(['Post'])

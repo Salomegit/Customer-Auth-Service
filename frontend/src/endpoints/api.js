@@ -5,7 +5,7 @@ const NOTES_URL = `${BASE_URL}notes/`;
 const REFRESH_TOKEN_URL = `${BASE_URL}auth/token/refresh`;
 const LOGOUT_URL = `${BASE_URL}auth/logout/`;
 const Authenticated_URL = `${BASE_URL}auth/authenticated/`;
-const login_api = async (username ,password) =>{
+export const login_api = async (username ,password) =>{
     const response = await axios.post(LOGIN_URL,{username:username,password:password},
                     {withCredentials:true}
     );
@@ -14,11 +14,10 @@ const login_api = async (username ,password) =>{
 
 }
 
-export default login_api
 
 export const getNotes = async () =>{
     try {
-        const response = await axios.get(NOTES_URL,{withCredentials:true});
+        const response = await axios.get(NOTES_URL,{},{withCredentials:true});
         return response.data
     }
     catch (error){
@@ -28,11 +27,11 @@ export const getNotes = async () =>{
 
 export const refreshToken = async () =>{
     try {
-         await axios.post(REFRESH_TOKEN_URL,{},{withCredentials:true});
+         await axios.post(REFRESH_TOKEN_URL,{withCredentials:true},{});
         return true
-    } catch (error) {
-        return error("Failed to refresh token")
-        
+    } catch (error)  {
+            console.error("Error refreshing access token", error.response?.data || error.message);
+            return false;
     }
    
 }
@@ -59,11 +58,24 @@ export const logout = async () =>{
     
  }
 
- export const isAuthenticated = async () =>{
-    try{
-        await axios.post(Authenticated_URL,{},{withCredentials:true});
-        return 'user is authenticated'
-    } catch{
-        return 'user is not authenticated'
+ export const isAuthenticated = async () => {
+    try {
+        // Sending POST request to the authentication endpoint with credentials
+        await axios.post(Authenticated_URL, {}, { withCredentials: true });
+        return true;
+    } catch (error) {
+        if (error.response) {
+         
+            console.error("Error Response:", error.response);
+            console.error("Error Status:", error.response.status);
+            console.error("Error Data:", error.response.data);
+            return false;
+        } else if (error.request) {
+            console.error("Error Request:", error.request);
+            return false;
+        } else {
+            console.error("Error Message:", error.message);
+            return false;
+        }
     }
- }
+};
