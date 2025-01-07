@@ -3,9 +3,15 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/useAuth';
+import { Typography, Link } from '@mui/material';
+
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const handle_not_registered = () => {
+    navigate('/register')
+
+    }
   const[successMessage, setSuccessMessage] = useState('');
   const{ login_user } = useAuth()
 
@@ -85,7 +91,17 @@ const LoginForm = () => {
         >
           {isSubmitting ? 'Loading...' : 'Submit'}
         </button>
-        {errors.root && <div className="text-red-500">{errors.root.message}</div>}
+        <Typography variant="body2" align="center">
+      <Link 
+        href="#" 
+        onClick={handle_not_registered} 
+        color="primary" 
+        underline="hover"
+      >
+        Don&apos;t have an account? Register
+      </Link>
+    </Typography>
+            {errors.root && <div className="text-red-500">{errors.root.message}</div>}
 
       </form>
     </div>

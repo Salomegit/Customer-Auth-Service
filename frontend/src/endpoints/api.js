@@ -4,7 +4,9 @@ const LOGIN_URL = `${BASE_URL}auth/login/`;
 const NOTES_URL = `${BASE_URL}notes/`;
 const REFRESH_TOKEN_URL = `${BASE_URL}auth/token/refresh/`;
 const LOGOUT_URL = `${BASE_URL}auth/logout/`;
+const Register_URL = `${BASE_URL}auth/register/`;
 const Authenticated_URL = `${BASE_URL}auth/authenticated/`;
+
 export const login_api = async (username ,password) =>{
     
 
@@ -12,13 +14,12 @@ export const login_api = async (username ,password) =>{
             const response = await axios.post(LOGIN_URL, { username, password }, { withCredentials: true });
     
             if (response.status === 200 && response.data.success) {
-                // Assume response contains a success field and authentication data
-                return true; // Successful login
+                return true; 
             } else {
-                return false; // Handle failed login response
+                return false; 
             }
         } catch (error) {
-            console.error("Error during login:", error); // Add error handling
+            console.error("Error during login:", error); 
             return false;
         }
     
@@ -98,3 +99,16 @@ export const logout = async () =>{
         }
     }
 };
+
+export const register_api = async (username,email,password) =>{
+    try{
+
+        const response = await axios.post(Register_URL,{username:username,email:email,password:password},{withCredentials:true})
+        if (response.status === 201){
+            return response.data}
+
+    }catch (error){
+        console.error("Error during registration:", error);
+        return false;
+    }
+}

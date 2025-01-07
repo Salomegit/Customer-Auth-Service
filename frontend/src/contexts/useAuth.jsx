@@ -2,10 +2,7 @@ import { useContext,useState,useEffect,createContext } from "react"
 import { isAuthenticated } from "../endpoints/api"
 import { login_api } from "../endpoints/api"
 import { useNavigate,useLocation } from "react-router-dom"
-
-
-
-
+import { register_api } from "../endpoints/api"
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
@@ -42,6 +39,24 @@ export const AuthProvider = ({children}) => {
   }
 }
 
+const register_user = async(username,email,password,confirmpassowrd) => {
+    if (password == confirmpassowrd){
+      try {
+        await register_api(username,email,password)
+        alert("Registration Successful")
+      } catch (error) {
+        alert("Error during registration:", error); 
+        return false;
+        
+      }
+        
+    }else{
+      alert("Passwords do not match")
+    }
+
+
+}
+
 
     useEffect(() => {
         getAuthenticated();
@@ -49,7 +64,7 @@ export const AuthProvider = ({children}) => {
 
 
   return (
-    <AuthContext.Provider value={{authenticated,loading,login_user }}>
+    <AuthContext.Provider value={{authenticated,loading,login_user,register_user }}>
      {children}
     </AuthContext.Provider>
   )
