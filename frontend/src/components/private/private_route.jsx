@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { CircularProgress, Box } from "@mui/material";
 
 
-const PrivateRoute = ({children}) => {
+const PrivateRoute = ({ children }) => {
     const {authenticated,loading} = useAuth()
     const navigate = useNavigate()
 
@@ -34,5 +34,9 @@ const PrivateRoute = ({children}) => {
     // return null
 }
 
+
+PrivateRoute.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default PrivateRoute

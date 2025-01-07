@@ -2,14 +2,25 @@ import axios from 'axios'
 const BASE_URL = 'http://127.0.0.1:8000/'; 
 const LOGIN_URL = `${BASE_URL}auth/login/`;
 const NOTES_URL = `${BASE_URL}notes/`;
-const REFRESH_TOKEN_URL = `${BASE_URL}auth/token/refresh`;
+const REFRESH_TOKEN_URL = `${BASE_URL}auth/token/refresh/`;
 const LOGOUT_URL = `${BASE_URL}auth/logout/`;
 const Authenticated_URL = `${BASE_URL}auth/authenticated/`;
 export const login_api = async (username ,password) =>{
-    const response = await axios.post(LOGIN_URL,{username:username,password:password},
-                    {withCredentials:true}
-    );
-        return response.data.success
+    
+
+        try {
+            const response = await axios.post(LOGIN_URL, { username, password }, { withCredentials: true });
+    
+            if (response.status === 200 && response.data.success) {
+                // Assume response contains a success field and authentication data
+                return true; // Successful login
+            } else {
+                return false; // Handle failed login response
+            }
+        } catch (error) {
+            console.error("Error during login:", error); // Add error handling
+            return false;
+        }
     
 
 }
@@ -17,24 +28,32 @@ export const login_api = async (username ,password) =>{
 
 export const getNotes = async () =>{
     try {
-        const response = await axios.get(NOTES_URL,{},{withCredentials:true});
+        const response = await axios.get(NOTES_URL,{withCredentials:true});
         return response.data
     }
     catch (error){
-        return callRefreshNotCalled(error,getNotes)
+        return callRefreshNotCalled(error, axios.get(NOTES_URL, { withCredentials: true }));
     }
 }
 
-export const refreshToken = async () =>{
+
+export const refreshToken = async () => {
     try {
-         await axios.post(REFRESH_TOKEN_URL,{withCredentials:true},{});
-        return true
-    } catch (error)  {
-            console.error("Error refreshing access token", error.response?.data || error.message);
-            return false;
+      await axios.post(
+        REFRESH_TOKEN_URL,
+        {}, 
+        { withCredentials: true } 
+      );
+      return true;
+    } catch (error) {
+      console.error(
+        "Error refreshing access token",
+        error.response?.data || error.message
+      );
+      return false;
     }
-   
-}
+  };
+
 
 const callRefreshNotCalled = async (error, func) => {
     if(error.response && error.response.status === 401) {
