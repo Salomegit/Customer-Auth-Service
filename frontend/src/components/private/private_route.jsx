@@ -1,6 +1,5 @@
 import { useAuth } from "../../contexts/useAuth"
 import { useNavigate } from "react-router-dom"
-import PropTypes from 'prop-types'
 import { CircularProgress, Box } from "@mui/material";
 
 
@@ -35,8 +34,5 @@ const PrivateRoute = ({ children }) => {
 }
 
 
-PrivateRoute.propTypes = {
-    children: PropTypes.node.isRequired,
-};
 
 export default PrivateRoute

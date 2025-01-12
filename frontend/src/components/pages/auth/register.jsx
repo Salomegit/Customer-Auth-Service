@@ -11,18 +11,29 @@ const RegisterForm = () => {
     register,
     handleSubmit,
     setError,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm();
+  const password = watch('password');
 
-  const onSubmit = async ({ username, email, password,confirmPassword }) => {
+
+  const onSubmit = async ({ username, email, password, confirmPassword }) => {
+    
+    if (password !== confirmPassword) {
+      setError('confirmPassword', {
+        type: 'manual',
+        message: 'Passwords do not match',
+      });
+      return;
+    }
     try {
-      const result = await register(username, password,email,confirmPassword);
+      const result = await register_user(username, password, email, confirmPassword);
       if (result) {
         setSuccessMessage('User Successfully Registered ! Welcome');
       } else {
         setError('root', {
           type: 'manual',
-          message: 'Invalid Credentials!', // This will show if login fails
+          message: 'Registration failed. Try again!', // This will show if login fails
         });
       }
 
@@ -104,7 +115,10 @@ const RegisterForm = () => {
           <input
             {...register('confirmPassword', {
               required: 'Please confirm your password',
-              
+              validate: (value) =>
+                value === password || 'Passwords do not match', // Custom validation
+
+
             })}
             type="password"
             id="confirmPassword"
