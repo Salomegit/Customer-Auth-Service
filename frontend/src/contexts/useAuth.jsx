@@ -39,23 +39,22 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const register_user = async (username, email, password, confirmPassword) => {
-    if (password === confirmPassword) {
+  const register_user = async (username, email, password) => {
+ 
       try {
         await register_api(username, email, password)
         alert("Registration Successful")
+        return true
       } catch (error) {
         alert("Error during registration: " + error.message);
         return false;
 
       }
 
-    } else {
-      alert("Passwords do not match")
     }
 
 
-  }
+  
 
 
   useEffect(() => {

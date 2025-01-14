@@ -27,7 +27,8 @@ const PrivateRoute = ({ children }) => {
     if (authenticated){
         return children
     }else{
-        navigate('/login')  
+        navigate('/login')
+        return null  
     }
 
     // return null

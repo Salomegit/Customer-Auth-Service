@@ -24,6 +24,9 @@ const LoginForm = () => {
       const result = await login_user(username, password);
       if (result) {
         setSuccessMessage("Login Successful! Welcome");
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      navigate('/menu')
       }else {
         setError("root", {
             type: 'manual',
@@ -32,8 +35,6 @@ const LoginForm = () => {
     }
 
      
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      navigate('/menu')
 
     }catch (error) {
     setError("root", {
