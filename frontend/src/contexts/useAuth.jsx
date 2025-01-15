@@ -3,9 +3,10 @@ import { isAuthenticated } from "../endpoints/api"
 import { login_api } from "../endpoints/api"
 import { useNavigate, useLocation } from "react-router-dom"
 import { register_api } from "../endpoints/api"
+import PropTypes from 'prop-types';
 const AuthContext = createContext()
-
 export const AuthProvider = ({ children }) => {
+  
   const [authenticated, setAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
   const navigator = useNavigate();
@@ -40,19 +41,15 @@ export const AuthProvider = ({ children }) => {
   }
 
   const register_user = async (username, email, password) => {
- 
-      try {
-        await register_api(username, email, password)
-        alert("Registration Successful")
-        return true
-      } catch (error) {
-        alert("Error during registration: " + error.message);
-        return false;
-
-      }
-
+    try {
+      await register_api(username, email, password);
+      return { success: true }; // Return a success indicator
+    } catch (error) {
+      console.error("Registration failed:", error); // Log the error for debugging
+      return { success: false, error: error.message }; // Include error details
     }
-
+  };
+  
 
   
 
@@ -66,12 +63,15 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={{ authenticated, loading, login_user, register_user }}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
-
 
 
 
 
 export const useAuth = () =>
   useContext(AuthContext);
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired, // Specify that children must be passed
+}
