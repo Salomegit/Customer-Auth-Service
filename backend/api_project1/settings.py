@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'apps.customer_auth1',
     'apps.customer_orders1',
     'django.contrib.sites',
+    "corsheaders",
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -76,7 +77,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    " http://localhost:5173/",
+    " http://localhost:5173",
     
 ]
 

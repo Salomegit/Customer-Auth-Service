@@ -4,7 +4,7 @@ const LOGIN_URL = `${BASE_URL}auth/login/`;
 const NOTES_URL = `${BASE_URL}notes/`;
 const REFRESH_TOKEN_URL = `${BASE_URL}auth/token/refresh/`;
 const LOGOUT_URL = `${BASE_URL}auth/logout/`;
-const Register_URL = `${BASE_URL}auth/register/`;
+const Register_URL = `${BASE_URL}auth/register`;
 const Authenticated_URL = `${BASE_URL}auth/authenticated/`;
 
 export const login_api = async (username ,password) =>{
@@ -100,10 +100,10 @@ export const logout = async () =>{
     }
 };
 
-export const register_api = async (username,email,password) =>{
+export const register_api = async (first_name,username,email,password) =>{
     try{
 
-        const response = await axios.post(Register_URL,{username:username,email:email,password:password},{withCredentials:true})
+        const response = await axios.post(Register_URL,{first_name:first_name, username:username,email:email,password:password},{withCredentials:true})
         if (response.status === 201){
             return response.data}
 

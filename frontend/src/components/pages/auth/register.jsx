@@ -17,7 +17,7 @@ const RegisterForm = () => {
   const password = watch('password');
 
 
-  const onSubmit = async ({ username, email, password, confirmPassword }) => {
+  const onSubmit = async ({ first_name, username, email, password, confirmPassword }) => {
 
     if (password !== confirmPassword) {
       setError('confirmPassword', {
@@ -27,7 +27,7 @@ const RegisterForm = () => {
       return;
     }
     try {
-      const result = await register_user(username, email, password, confirmPassword);
+      const result = await register_user(first_name,username, email, password, confirmPassword);
       if (result) {
         setSuccessMessage('User Successfully Registered ! Welcome');
         await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -54,7 +54,20 @@ const RegisterForm = () => {
     <div className="flex justify-center items-center p-6 shadow-md rounded-md w-80 mx-auto mt-10">
       <form onSubmit={handleSubmit(onSubmit)}>
         <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
-
+        {/* First Name Field */}
+        <div className="mb-4">
+          <label htmlFor="first_name" className="block text-gray-700 font-medium mb-2">
+            First Name
+          </label>
+          <input
+            {...register('first_name', { required: 'First Name is required' })}
+            type="text"
+            id="first_name"
+            placeholder="Enter your first name"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.first_name && <p className="text-red-500">{errors.first_name.message}</p>}
+        </div>
         {/* Username Field */}
         <div className="mb-4">
           <label htmlFor="username" className="block text-gray-700 font-medium mb-2">
